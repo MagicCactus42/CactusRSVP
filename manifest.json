@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "CactusRSVP",
+  "version": "1.0",
+  "description": "Czytaj PDF techniką RSVP z podświetloną literą ORP",
+  "action": {
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "permissions": ["activeTab", "scripting", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "web_accessible_resources": [{
+    "resources": ["lib/pdf.min.js", "lib/pdf.worker.min.js", "content.js"],
+    "matches": ["<all_urls>"]
+  }],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
