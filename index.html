@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CactusRSVP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        /* Input section */
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .input-section input[type="text"] {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: #16213e;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .input-section input[type="text"]:focus {
+            outline: none;
+            border-color: #e94560;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #e94560;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #ff6b6b;
+        }
+
+        .btn-secondary {
+            background: #0f3460;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #1a5090;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        /* Reader display */
+        .reader-display {
+            background: #16213e;
+            border-radius: 16px;
+            padding: 60px 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .orp-marker {
+            position: absolute;
+            left: 50%;
+            top: 20px;
+            bottom: 20px;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, var(--highlight-color, #e94560) 30%, var(--highlight-color, #e94560) 70%, transparent);
+            opacity: 0.3;
+        }
+
+        .word-container {
+            font-family: 'Roboto Mono', monospace;
+            font-weight: bold;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .word-before {
+            text-align: right;
+            width: 200px;
+        }
+
+        .word-highlight {
+            color: var(--highlight-color, #e94560);
+            width: 1ch;
+            text-align: center;
+        }
+
+        .word-after {
+            text-align: left;
+            width: 200px;
+        }
+
+        .placeholder-text {
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .controls .btn {
+            min-width: 100px;
+        }
+
+        /* Settings */
+        .settings {
+            background: #16213e;
+            border-radius: 12px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .setting-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .setting-group label {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .setting-group input[type="range"] {
+            width: 100%;
+            accent-color: #e94560;
+        }
+
+        .setting-group input[type="color"] {
+            width: 60px;
+            height: 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .setting-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* Progress */
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: #e94560;
+            transition: width 0.1s;
+        }
+
+        /* Status */
+        .status {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌵 CactusRSVP</h1>
+
+        <div class="input-section">
+            <input type="text" id="pdfUrl" placeholder="Wklej URL do PDF...">
+            <button class="btn btn-primary" onclick="loadFromUrl()">Wczytaj URL</button>
+            <div class="file-input-wrapper">
+                <button class="btn btn-secondary">Wybierz plik</button>
+                <input type="file" accept=".pdf" onchange="loadFromFile(event)">
+            </div>
+        </div>
+
+        <div class="status" id="status">Wczytaj PDF aby rozpocząć</div>
+
+        <div class="progress-bar">
+            <div class="progress-bar-fill" id="progress" style="width: 0%"></div>
+        </div>
+
+        <div class="reader-display">
+            <div class="orp-marker"></div>
+            <div class="word-container" id="wordDisplay" style="font-size: 48px;">
+                <span class="placeholder-text">Tutaj pojawi się tekst</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" id="playBtn" onclick="togglePlay()" disabled>▶ Start</button>
+            <button class="btn btn-secondary" onclick="restart()" disabled id="restartBtn">↺ Od nowa</button>
+            <button class="btn btn-secondary" onclick="prevWord()" disabled id="prevBtn">← Wstecz</button>
+            <button class="btn btn-secondary" onclick="nextWord()" disabled id="nextBtn">Dalej →</button>
+        </div>
+
+        <div class="settings">
+            <div class="setting-group">
+                <label>Prędkość</label>
+                <input type="range" id="speed" min="100" max="800" value="300" oninput="updateSpeed()">
+                <span class="setting-value"><span id="speedValue">300</span> WPM</span>
+            </div>
+            <div class="setting-group">
+                <label>Rozmiar tekstu</label>
+                <input type="range" id="fontSize" min="24" max="96" value="48" oninput="updateFontSize()">
+                <span class="setting-value"><span id="fontSizeValue">48</span>px</span>
+            </div>
+            <div class="setting-group">
+                <label>Kolor podświetlenia</label>
+                <input type="color" id="highlightColor" value="#e94560" oninput="updateHighlightColor()">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        let words = [];
+        let currentIndex = 0;
+        let isPlaying = false;
+        let intervalId = null;
+
+        // ORP - Optimal Recognition Point
+        function getORPIndex(word) {
+            const len = word.length;
+            if (len <= 2) return 0;  // 1-2 znaki: pierwszy znak
+            if (len <= 5) return 1;  // 3-5 znaków: drugi znak
+            if (len <= 9) return 2;  // 6-9 znaków: trzeci znak
+            if (len <= 13) return 3; // 10-13 znaków: czwarty znak
+            return 4;                 // 14+ znaków: piąty znak
+        }
+
+        function renderWord(word) {
+            if (!word) return '';
+            const orpIndex = getORPIndex(word);
+            const before = word.substring(0, orpIndex);
+            const highlight = word[orpIndex];
+            const after = word.substring(orpIndex + 1);
+            return `<span class="word-before">${before}</span><span class="word-highlight">${highlight}</span><span class="word-after">${after}</span>`;
+        }
+
+        function displayWord(index) {
+            const display = document.getElementById('wordDisplay');
+            if (index >= 0 && index < words.length) {
+                display.innerHTML = renderWord(words[index]);
+                const progress = ((index + 1) / words.length) * 100;
+                document.getElementById('progress').style.width = progress + '%';
+                document.getElementById('status').textContent = `Słowo ${index + 1} z ${words.length}`;
+            }
+        }
+
+        function togglePlay() {
+            if (isPlaying) {
+                pause();
+            } else {
+                play();
+            }
+        }
+
+        function play() {
+            if (words.length === 0) return;
+            if (currentIndex >= words.length) currentIndex = 0;
+
+            isPlaying = true;
+            document.getElementById('playBtn').textContent = '⏸ Pauza';
+
+            const wpm = parseInt(document.getElementById('speed').value);
+            const interval = 60000 / wpm;
+
+            intervalId = setInterval(() => {
+                displayWord(currentIndex);
+                currentIndex++;
+                if (currentIndex >= words.length) {
+                    pause();
+                    document.getElementById('status').textContent = 'Koniec tekstu';
+                }
+            }, interval);
+        }
+
+        function pause() {
+            isPlaying = false;
+            document.getElementById('playBtn').textContent = '▶ Start';
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+        }
+
+        function restart() {
+            pause();
+            currentIndex = 0;
+            if (words.length > 0) {
+                displayWord(0);
+            }
+        }
+
+        function prevWord() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                displayWord(currentIndex);
+            }
+        }
+
+        function nextWord() {
+            if (currentIndex < words.length - 1) {
+                currentIndex++;
+                displayWord(currentIndex);
+            }
+        }
+
+        function updateSpeed() {
+            const value = document.getElementById('speed').value;
+            document.getElementById('speedValue').textContent = value;
+            if (isPlaying) {
+                pause();
+                play();
+            }
+        }
+
+        function updateFontSize() {
+            const value = document.getElementById('fontSize').value;
+            document.getElementById('fontSizeValue').textContent = value;
+            document.getElementById('wordDisplay').style.fontSize = value + 'px';
+        }
+
+        function updateHighlightColor() {
+            const color = document.getElementById('highlightColor').value;
+            document.querySelector('.word-container').style.setProperty('--highlight-color', color);
+        }
+
+        function enableControls() {
+            document.getElementById('playBtn').disabled = false;
+            document.getElementById('restartBtn').disabled = false;
+            document.getElementById('prevBtn').disabled = false;
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        async function extractTextFromPdf(pdfData) {
+            document.getElementById('status').textContent = 'Wczytywanie PDF...';
+
+            try {
+                const pdf = await pdfjsLib.getDocument(pdfData).promise;
+                let fullText = '';
+
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const textContent = await page.getTextContent();
+                    const pageText = textContent.items.map(item => item.str).join(' ');
+                    fullText += pageText + ' ';
+                    document.getElementById('status').textContent = `Wczytywanie strony ${i}/${pdf.numPages}...`;
+                }
+
+                words = fullText.split(/\s+/)
+                    .map(w => w.replace(/[.,;:!?„""''()\[\]{}<>\/\\—–\-]/g, ''))
+                    .filter(w => w.length > 0);
+                currentIndex = 0;
+
+                if (words.length > 0) {
+                    displayWord(0);
+                    enableControls();
+                    document.getElementById('status').textContent = `Gotowe! ${words.length} słów`;
+                } else {
+                    document.getElementById('status').textContent = 'Nie znaleziono tekstu w PDF';
+                }
+            } catch (error) {
+                console.error(error);
+                document.getElementById('status').textContent = 'Błąd wczytywania PDF: ' + error.message;
+            }
+        }
+
+        async function loadFromUrl() {
+            const url = document.getElementById('pdfUrl').value.trim();
+            if (!url) {
+                document.getElementById('status').textContent = 'Podaj URL do PDF';
+                return;
+            }
+
+            pause();
+            document.getElementById('status').textContent = 'Pobieranie PDF...';
+
+            try {
+                // Use CORS proxy
+                const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
+                const response = await fetch(proxyUrl);
+                const arrayBuffer = await response.arrayBuffer();
+                await extractTextFromPdf({ data: arrayBuffer });
+            } catch (error) {
+                console.error(error);
+                document.getElementById('status').textContent = 'Błąd pobierania: ' + error.message;
+            }
+        }
+
+        async function loadFromFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            pause();
+            const arrayBuffer = await file.arrayBuffer();
+            await extractTextFromPdf({ data: arrayBuffer });
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                togglePlay();
+            } else if (e.code === 'ArrowLeft') {
+                prevWord();
+            } else if (e.code === 'ArrowRight') {
+                nextWord();
+            } else if (e.code === 'KeyR') {
+                restart();
+            }
+        });
+    </script>
+</body>
+</html>
