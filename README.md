@@ -1,55 +1,55 @@
 # 🌵 CactusRSVP
 
-Czytnik RSVP (Rapid Serial Visual Presentation) z podświetleniem ORP (Optimal Recognition Point).
+RSVP (Rapid Serial Visual Presentation) reader with ORP (Optimal Recognition Point) highlighting.
 
 ## Funkcje
 
-- 📄 Wczytywanie PDF z URL lub pliku
-- 🌐 Automatyczne scrapowanie tekstu ze stron HTML
-- 📍 Wybór miejsca startu (lista słów lub kliknięcie na stronie)
-- 👀 Podgląd tekstu w stylu Spotify/YT Music
-- ⏪ Cofanie o 15 sekund
-- ⚡ Regulacja prędkości (100-800 WPM)
-- 🎨 Personalizacja (rozmiar tekstu, kolor podświetlenia)
+- 📄 Load PDF from URL or file
+- 🌐 Automatic text scraping from HTML pages
+- 📍 Select start position (word list or click on page)
+- 👀 Text preview in Spotify/YT Music style
+- ⏪ Rewind 15 seconds
+- ⚡ Speed adjustment (100-800 WPM)
+- 🎨 Customization (text size, highlight color)
 
 ## Instalacja
 
-1. Sklonuj repozytorium:
+1. Clone the repository:
    ```bash
-   git clone https://github.com/TWOJ_USERNAME/rapid.git
+   git clone https://github.com/MagicCactus42/CactusRSVP.git
    ```
 
-2. Otwórz Chrome i wejdź w `chrome://extensions/`
+2. Open chrome and navigate to `chrome://extensions/`
 
-3. Włącz **Developer mode** (prawy górny róg)
+3. Enable **Developer mode** (top right corner)
 
-4. Kliknij **Load unpacked**
+4. Click **Load unpacked**
 
-5. Wybierz folder `rapid`
+5. Select the `CactusRSVP` folder
 
-6. Gotowe! Kliknij ikonę 🌵 na pasku rozszerzeń
+6. Done! Click the cactus icon in the extensions toolbar
 
-## Użycie
+## Usage
 
-### Na stronie HTML:
-1. Otwórz dowolną stronę
-2. Kliknij ikonę wtyczki
-3. Tekst zostanie automatycznie wyekstrahowany
-4. Naciśnij Start lub Spację
+### On an HTML page:
+1. Open any website
+2. Click the extension icon
+3. Text will be extracted automatically
+4. Press Start or Spacebar
 
-### Na PDF:
-1. Otwórz plik PDF w przeglądarce
-2. Kliknij ikonę wtyczki
-3. PDF zostanie automatycznie wczytany
+### On a PDF:
+1. Open a PDF file in the browser
+2. Click the extension icon
+3. The PDF will be loaded automatically
 
-### Skróty klawiszowe:
-- `Spacja` - Start/Pauza
-- `←` / `→` - Poprzednie/Następne słowo
-- `R` - Od nowa
-- `ESC` - Zamknij
+### Keyboard Shortcuts:
+- `Space` - Start/Pause
+- `←` / `→` - Previous/Next word
+- `R` - Restart
+- `ESC` - Close
 
-## Technologie
+## Technologies
 
 - Vanilla JavaScript
-- PDF.js (parsowanie PDF)
+- PDF.js (PDF parsing)
 - Chrome Extension Manifest V3
