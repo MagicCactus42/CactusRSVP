@@ -2,7 +2,7 @@
 
 RSVP (Rapid Serial Visual Presentation) reader with ORP (Optimal Recognition Point) highlighting.
 
-## Funkcje
+## Features
 
 - 📄 Load PDF from URL or file
 - 🌐 Automatic text scraping from HTML pages
@@ -12,7 +12,7 @@ RSVP (Rapid Serial Visual Presentation) reader with ORP (Optimal Recognition Poi
 - ⚡ Speed adjustment (100-800 WPM)
 - 🎨 Customization (text size, highlight color)
 
-## Instalacja
+## Installation
 
 1. Clone the repository:
    ```bash
