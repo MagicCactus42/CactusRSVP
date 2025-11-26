@@ -357,15 +357,15 @@
     <h1>🌵 CactusRSVP</h1>
 
     <div class="input-section">
-        <input type="text" id="pdfUrl" placeholder="Wklej URL do PDF...">
-        <button class="btn btn-primary" id="loadUrlBtn">Wczytaj</button>
+        <input type="text" id="pdfUrl" placeholder="Paste URL of PDF...">
+        <button class="btn btn-primary" id="loadUrlBtn">Load</button>
         <div class="file-input-wrapper">
-            <button class="btn btn-secondary">Plik</button>
+            <button class="btn btn-secondary">File</button>
             <input type="file" accept=".pdf" id="fileInput">
         </div>
     </div>
 
-    <div class="status" id="status">Wczytaj PDF aby rozpocząć</div>
+    <div class="status" id="status">Load PDF to start</div>
 
     <div class="progress-bar">
         <div class="progress-bar-fill" id="progress" style="width: 0%"></div>
@@ -374,7 +374,7 @@
     <div class="reader-display">
         <div class="orp-marker"></div>
         <div class="word-container" id="wordDisplay" style="font-size: 36px;">
-            <span class="placeholder-text">Tutaj pojawi się tekst</span>
+            <span class="placeholder-text">Text will appear here</span>
         </div>
     </div>
 
@@ -387,29 +387,29 @@
     </div>
 
     <div class="preview-section">
-        <button class="btn btn-secondary" id="togglePreview" style="width:100%; margin-bottom:10px;" disabled>Podgląd tekstu</button>
+        <button class="btn btn-secondary" id="togglePreview" style="width:100%; margin-bottom:10px;" disabled>Text preview</button>
         <div id="textPreview" class="text-preview"></div>
     </div>
 
     <div class="picker-section">
-        <button class="btn btn-highlight" id="togglePicker" disabled>📍 Wybierz miejsce startu</button>
-        <input type="text" id="wordSearch" class="search-box" placeholder="Szukaj słowa lub frazy (np. 'bitcoin system')..." style="display:none;">
+        <button class="btn btn-highlight" id="togglePicker" disabled>📍 Choose starting point</button>
+        <input type="text" id="wordSearch" class="search-box" placeholder="Search for a phrase (e.g. 'bitcoin system')..." style="display:none;">
         <div id="wordPicker" class="word-picker"></div>
     </div>
 
     <div class="settings">
         <div class="setting-group">
-            <label>Prędkość</label>
+            <label>Speed</label>
             <input type="range" id="speed" min="100" max="800" value="300">
             <span class="setting-value"><span id="speedValue">300</span> WPM</span>
         </div>
         <div class="setting-group">
-            <label>Rozmiar</label>
+            <label>Size</label>
             <input type="range" id="fontSize" min="24" max="72" value="36">
             <span class="setting-value"><span id="fontSizeValue">36</span>px</span>
         </div>
         <div class="setting-group">
-            <label>Kolor</label>
+            <label>Color</label>
             <input type="color" id="highlightColor" value="#e94560">
         </div>
     </div>

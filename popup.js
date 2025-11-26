@@ -8,11 +8,11 @@ let intervalId = null;
 // ORP - Optimal Recognition Point
 function getORPIndex(word) {
     const len = word.length;
-    if (len <= 2) return 0;  // 1-2 znaki: pierwszy znak
-    if (len <= 5) return 1;  // 3-5 znaków: drugi znak
-    if (len <= 9) return 2;  // 6-9 znaków: trzeci znak
-    if (len <= 13) return 3; // 10-13 znaków: czwarty znak
-    return 4;                 // 14+ znaków: piąty znak
+    if (len <= 2) return 0;  
+    if (len <= 5) return 1;  
+    if (len <= 9) return 2;  
+    if (len <= 13) return 3; 
+    return 4;                 
 }
 
 function renderWord(word) {
@@ -30,7 +30,7 @@ function displayWord(index) {
         display.innerHTML = renderWord(words[index]);
         const progress = ((index + 1) / words.length) * 100;
         document.getElementById('progress').style.width = progress + '%';
-        document.getElementById('status').textContent = `Słowo ${index + 1} z ${words.length}`;
+        document.getElementById('status').textContent = `Word ${index + 1} / ${words.length}`;
         highlightCurrentWord();
         highlightPreviewWord();
     }
@@ -59,7 +59,7 @@ function play() {
         currentIndex++;
         if (currentIndex >= words.length) {
             pause();
-            document.getElementById('status').textContent = 'Koniec tekstu';
+            document.getElementById('status').textContent = 'End of the text';
         }
     }, interval);
 }
@@ -131,7 +131,7 @@ function rewind15s() {
     const wordsToRewind = Math.floor(wpm / 4); // 15 seconds worth of words
     currentIndex = Math.max(0, currentIndex - wordsToRewind);
     displayWord(currentIndex);
-    document.getElementById('status').textContent = `Cofnięto ${wordsToRewind} słów`;
+    document.getElementById('status').textContent = `Rewinded ${wordsToRewind} words`;
 }
 
 // Text preview
@@ -144,11 +144,11 @@ function togglePreview() {
 
     if (previewVisible) {
         preview.classList.add('visible');
-        btn.textContent = 'Ukryj podgląd';
+        btn.textContent = 'Hide text';
         updateTextPreview();
     } else {
         preview.classList.remove('visible');
-        btn.textContent = 'Podgląd tekstu';
+        btn.textContent = 'Text preview';
     }
 }
 
@@ -177,7 +177,7 @@ function updateTextPreview() {
         span.onclick = () => {
             currentIndex = parseInt(span.dataset.index);
             displayWord(currentIndex);
-            document.getElementById('status').textContent = `Przeskoczono do: "${words[currentIndex]}" (${currentIndex + 1}/${words.length})`;
+            document.getElementById('status').textContent = `Skipped to: "${words[currentIndex]}" (${currentIndex + 1}/${words.length})`;
         };
 
         preview.appendChild(span);
@@ -220,12 +220,12 @@ function togglePicker() {
     if (pickerVisible) {
         picker.classList.add('visible');
         search.style.display = 'block';
-        btn.textContent = 'Ukryj wybór';
+        btn.textContent = 'Hide';
         updateWordPicker();
     } else {
         picker.classList.remove('visible');
         search.style.display = 'none';
-        btn.textContent = 'Wybierz miejsce startu';
+        btn.textContent = 'Choose starting point';
     }
 }
 
@@ -261,7 +261,7 @@ function updateWordPicker(filter = '') {
                     currentIndex = parseInt(span.dataset.index);
                     displayWord(currentIndex);
                     highlightCurrentWord();
-                    document.getElementById('status').textContent = `Start od: "${words[currentIndex]}" (${currentIndex + 1}/${words.length})`;
+                    document.getElementById('status').textContent = `Start from: "${words[currentIndex]}" (${currentIndex + 1}/${words.length})`;
                 };
 
                 picker.appendChild(span);
@@ -282,7 +282,7 @@ function updateWordPicker(filter = '') {
                 currentIndex = parseInt(span.dataset.index);
                 displayWord(currentIndex);
                 highlightCurrentWord();
-                document.getElementById('status').textContent = `Start od: "${words[currentIndex]}" (${currentIndex + 1}/${words.length})`;
+                document.getElementById('status').textContent = `Start from: "${words[currentIndex]}" (${currentIndex + 1}/${words.length})`;
             };
 
             picker.appendChild(span);
@@ -292,17 +292,17 @@ function updateWordPicker(filter = '') {
 
     if (count === 0) {
         const empty = document.createElement('span');
-        empty.textContent = searchWords.length > 1 ? 'Nie znaleziono frazy' : 'Nie znaleziono';
+        empty.textContent = searchWords.length > 1 ? 'Phrase not found' : 'Not found';
         empty.className = 'more-indicator';
         picker.appendChild(empty);
     } else if (words.length > maxShow && !filter) {
         const more = document.createElement('span');
-        more.textContent = `... +${words.length - maxShow} więcej (użyj wyszukiwania)`;
+        more.textContent = `... +${words.length - maxShow} more`;
         more.className = 'more-indicator';
         picker.appendChild(more);
     } else if (searchWords.length > 1) {
         const info = document.createElement('span');
-        info.textContent = `Znaleziono ${count} wystąpień frazy`;
+        info.textContent = `Found ${count} occurrences of the phrase`;
         info.className = 'more-indicator';
         picker.insertBefore(info, picker.firstChild);
     }
@@ -318,7 +318,7 @@ function highlightCurrentWord() {
 }
 
 async function extractTextFromPdf(pdfData) {
-    document.getElementById('status').textContent = 'Wczytywanie PDF...';
+    document.getElementById('status').textContent = 'Loading PDF...';
 
     try {
         const pdf = await pdfjsLib.getDocument(pdfData).promise;
@@ -329,7 +329,7 @@ async function extractTextFromPdf(pdfData) {
             const textContent = await page.getTextContent();
             const pageText = textContent.items.map(item => item.str).join(' ');
             fullText += pageText + ' ';
-            document.getElementById('status').textContent = `Wczytywanie strony ${i}/${pdf.numPages}...`;
+            document.getElementById('status').textContent = `Loading website ${i}/${pdf.numPages}...`;
         }
 
         // Remove emojis
@@ -349,25 +349,25 @@ async function extractTextFromPdf(pdfData) {
         if (words.length > 0) {
             displayWord(0);
             enableControls();
-            document.getElementById('status').textContent = `Gotowe! ${words.length} słów`;
+            document.getElementById('status').textContent = `Done! ${words.length} words`;
         } else {
-            document.getElementById('status').textContent = 'Nie znaleziono tekstu w PDF';
+            document.getElementById('status').textContent = 'No text in PDF found';
         }
     } catch (error) {
         console.error(error);
-        document.getElementById('status').textContent = 'Błąd wczytywania PDF: ' + error.message;
+        document.getElementById('status').textContent = 'Error occured while loading PDF: ' + error.message;
     }
 }
 
 async function loadFromUrl() {
     const url = document.getElementById('pdfUrl').value.trim();
     if (!url) {
-        document.getElementById('status').textContent = 'Podaj URL do PDF';
+        document.getElementById('status').textContent = 'Type URL of PDF';
         return;
     }
 
     pause();
-    document.getElementById('status').textContent = 'Pobieranie PDF...';
+    document.getElementById('status').textContent = 'Downloading PDF...';
 
     try {
         // Try direct fetch first, then proxy
@@ -383,7 +383,7 @@ async function loadFromUrl() {
             }
         } catch (e) {
             // Use CORS proxy
-            document.getElementById('status').textContent = 'Używam proxy...';
+            document.getElementById('status').textContent = 'Using proxy...';
             const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
             response = await fetch(proxyUrl);
             if (!response.ok) {
@@ -396,14 +396,14 @@ async function loadFromUrl() {
         const firstBytes = new Uint8Array(arrayBuffer.slice(0, 5));
         const header = String.fromCharCode(...firstBytes);
         if (!header.startsWith('%PDF')) {
-            throw new Error('Plik nie jest prawidłowym PDF');
+            throw new Error('Unvalid PDF');
         }
 
-        document.getElementById('status').textContent = 'Przetwarzanie PDF...';
+        document.getElementById('status').textContent = 'Processing PDF...';
         await extractTextFromPdf({ data: arrayBuffer });
     } catch (error) {
         console.error('PDF Load Error:', error);
-        document.getElementById('status').textContent = 'Błąd: ' + error.message;
+        document.getElementById('status').textContent = 'Error: ' + error.message;
     }
 }
 

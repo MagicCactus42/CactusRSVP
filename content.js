@@ -343,53 +343,53 @@
             </div>
             <div class="rsvp-tab-content" id="rsvp-content-auto">
                 <div class="rsvp-url-input" id="rsvp-url-section" style="display:none; margin-bottom: 15px;">
-                    <input type="text" id="rsvp-url" placeholder="Wklej URL do PDF..." style="width: calc(100% - 90px); padding: 10px; border: 2px solid #333; border-radius: 6px; background: #16213e; color: #fff; font-size: 0.9rem;">
-                    <button class="rsvp-btn rsvp-btn-primary" id="rsvp-load-url" style="margin-left: 5px;">Wczytaj</button>
+                    <input type="text" id="rsvp-url" placeholder="Paste URL of PDF..." style="width: calc(100% - 90px); padding: 10px; border: 2px solid #333; border-radius: 6px; background: #16213e; color: #fff; font-size: 0.9rem;">
+                    <button class="rsvp-btn rsvp-btn-primary" id="rsvp-load-url" style="margin-left: 5px;">Load</button>
                 </div>
             </div>
             <div class="rsvp-tab-content" id="rsvp-content-manual" style="display:none;">
-                <textarea id="rsvp-manual-text" placeholder="Wklej tekst tutaj..." style="width: 100%; height: 120px; padding: 10px; border: 2px solid #333; border-radius: 6px; background: #16213e; color: #fff; font-size: 0.9rem; resize: vertical; margin-bottom: 10px;"></textarea>
-                <button class="rsvp-btn rsvp-btn-primary" id="rsvp-load-manual" style="width: 100%;">Wczytaj tekst</button>
+                <textarea id="rsvp-manual-text" placeholder="Insert text here..." style="width: 100%; height: 120px; padding: 10px; border: 2px solid #333; border-radius: 6px; background: #16213e; color: #fff; font-size: 0.9rem; resize: vertical; margin-bottom: 10px;"></textarea>
+                <button class="rsvp-btn rsvp-btn-primary" id="rsvp-load-manual" style="width: 100%;">Load text</button>
             </div>
-            <div class="rsvp-status" id="rsvp-status">Ładowanie tekstu...</div>
+            <div class="rsvp-status" id="rsvp-status">Loading text...</div>
             <div class="rsvp-progress">
                 <div class="rsvp-progress-fill" id="rsvp-progress"></div>
             </div>
             <div class="rsvp-display">
                 <div class="rsvp-orp-marker"></div>
                 <div class="rsvp-word" id="rsvp-word">
-                    <span class="rsvp-placeholder">Ładowanie...</span>
+                    <span class="rsvp-placeholder">Loading...</span>
                 </div>
             </div>
             <div class="rsvp-picker-toggle">
-                <button id="rsvp-toggle-picker" class="rsvp-btn-highlight">📍 Wybierz z listy</button>
-                <button id="rsvp-select-from-page" class="rsvp-btn-highlight">👆 Kliknij na stronie</button>
+                <button id="rsvp-toggle-picker" class="rsvp-btn-highlight">📍 Choose from list</button>
+                <button id="rsvp-select-from-page" class="rsvp-btn-highlight">👆 Click on website</button>
             </div>
             <div class="rsvp-word-picker" id="rsvp-word-picker"></div>
             <div class="rsvp-controls">
                 <button class="rsvp-btn rsvp-btn-primary" id="rsvp-play" disabled>▶ Start</button>
                 <button class="rsvp-btn rsvp-btn-secondary" id="rsvp-rewind" disabled title="Cofnij 15s">-15s</button>
-                <button class="rsvp-btn rsvp-btn-secondary" id="rsvp-restart" disabled>↺ Od nowa</button>
+                <button class="rsvp-btn rsvp-btn-secondary" id="rsvp-restart" disabled>↺ Restart</button>
                 <button class="rsvp-btn rsvp-btn-secondary" id="rsvp-prev" disabled>←</button>
                 <button class="rsvp-btn rsvp-btn-secondary" id="rsvp-next" disabled>→</button>
             </div>
             <div class="rsvp-preview-section">
-                <button class="rsvp-btn rsvp-btn-secondary" id="rsvp-toggle-preview" style="width:100%;margin-bottom:10px;" disabled>Podgląd tekstu</button>
+                <button class="rsvp-btn rsvp-btn-secondary" id="rsvp-toggle-preview" style="width:100%;margin-bottom:10px;" disabled>Text preview</button>
                 <div class="rsvp-text-preview" id="rsvp-text-preview"></div>
             </div>
             <div class="rsvp-settings">
                 <div class="rsvp-setting">
-                    <label>Prędkość</label>
+                    <label>Speed</label>
                     <input type="range" id="rsvp-speed" min="100" max="800" value="300">
                     <span class="rsvp-setting-value"><span id="rsvp-speed-val">300</span> WPM</span>
                 </div>
                 <div class="rsvp-setting">
-                    <label>Rozmiar tekstu</label>
+                    <label>Size</label>
                     <input type="range" id="rsvp-fontsize" min="24" max="96" value="48">
                     <span class="rsvp-setting-value"><span id="rsvp-fontsize-val">48</span>px</span>
                 </div>
                 <div class="rsvp-setting">
-                    <label>Kolor podświetlenia</label>
+                    <label>Color</label>
                     <input type="color" id="rsvp-color" value="#e94560">
                 </div>
             </div>
@@ -455,7 +455,7 @@
         if (index >= 0 && index < words.length) {
             wordDisplay.innerHTML = renderWord(words[index]);
             progress.style.width = ((index + 1) / words.length * 100) + '%';
-            status.textContent = `Słowo ${index + 1} z ${words.length}`;
+            status.textContent = `Word ${index + 1} / ${words.length}`;
             // Update picker highlight
             const spans = wordPicker.querySelectorAll('span[data-index]');
             spans.forEach(s => {
@@ -470,7 +470,7 @@
         if (words.length === 0) return;
         if (currentIndex >= words.length) currentIndex = 0;
         isPlaying = true;
-        playBtn.textContent = '⏸ Pauza';
+        playBtn.textContent = '⏸ Pause';
         const wpm = parseInt(speedInput.value);
         const interval = 60000 / wpm;
         intervalId = setInterval(() => {
@@ -478,7 +478,7 @@
             currentIndex++;
             if (currentIndex >= words.length) {
                 pause();
-                status.textContent = 'Koniec tekstu';
+                status.textContent = 'Finished';
             }
         }, interval);
     }
@@ -517,7 +517,7 @@
         const wordsToRewind = Math.floor(wpm / 4); // 15 seconds worth of words
         currentIndex = Math.max(0, currentIndex - wordsToRewind);
         displayWord(currentIndex);
-        status.textContent = `Cofnięto ${wordsToRewind} słów`;
+        status.textContent = `Rewinded ${wordsToRewind} words`;
     }
 
     // Text preview
@@ -528,11 +528,11 @@
 
         if (previewVisible) {
             textPreview.classList.add('visible');
-            togglePreviewBtn.textContent = 'Ukryj podgląd';
+            togglePreviewBtn.textContent = 'Hide preview';
             updateTextPreview();
         } else {
             textPreview.classList.remove('visible');
-            togglePreviewBtn.textContent = 'Podgląd tekstu';
+            togglePreviewBtn.textContent = 'Text preview';
         }
     }
 
@@ -559,7 +559,7 @@
             span.onclick = () => {
                 currentIndex = parseInt(span.dataset.index);
                 displayWord(currentIndex);
-                status.textContent = `Przeskoczono do: "${words[currentIndex]}" (${currentIndex + 1}/${words.length})`;
+                status.textContent = `Skipped to: "${words[currentIndex]}" (${currentIndex + 1}/${words.length})`;
             };
 
             textPreview.appendChild(span);
@@ -608,14 +608,14 @@
         }
 
         try {
-            status.textContent = 'Pobieranie PDF...';
+            status.textContent = 'Downloading PDF...';
             const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(pdfUrl);
             const response = await fetch(proxyUrl);
 
             if (!response.ok) throw new Error('HTTP ' + response.status);
 
             const arrayBuffer = await response.arrayBuffer();
-            status.textContent = 'Przetwarzanie PDF...';
+            status.textContent = 'Processing PDF...';
 
             const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
             let fullText = '';
@@ -625,14 +625,14 @@
                 const textContent = await page.getTextContent();
                 const pageText = textContent.items.map(item => item.str).join(' ');
                 fullText += pageText + ' ';
-                status.textContent = `Strona ${i}/${pdf.numPages}...`;
+                status.textContent = `Page ${i}/${pdf.numPages}...`;
             }
 
             processText(fullText);
             urlSection.style.display = 'none';
         } catch (error) {
             console.error('RSVP PDF Error:', error);
-            status.textContent = 'Błąd: ' + error.message;
+            status.textContent = 'Error: ' + error.message;
             showUrlInput();
         }
     }
@@ -694,7 +694,7 @@
     togglePickerBtn.onclick = () => {
         pickerVisible = !pickerVisible;
         wordPicker.style.display = pickerVisible ? 'flex' : 'none';
-        togglePickerBtn.textContent = pickerVisible ? 'Ukryj wybór' : 'Wybierz miejsce startu';
+        togglePickerBtn.textContent = pickerVisible ? 'Hide' : 'Choose starting point';
     };
 
     function updateWordPicker() {
@@ -714,7 +714,7 @@
         }
         if (words.length > 500) {
             const more = document.createElement('span');
-            more.textContent = `... +${words.length - 500} więcej`;
+            more.textContent = `... +${words.length - 500} more`;
             more.style.color = '#666';
             more.style.cursor = 'default';
             wordPicker.appendChild(more);
@@ -737,7 +737,7 @@
 
     selectFromPageBtn.onclick = () => {
         if (words.length === 0) {
-            status.textContent = 'Najpierw wczytaj tekst';
+            status.textContent = 'Load text first';
             return;
         }
 
@@ -768,7 +768,7 @@
         const banner = document.createElement('div');
         banner.id = 'rsvp-selection-banner';
         banner.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#e94560;color:white;padding:15px 30px;border-radius:10px;z-index:2147483647;font-family:sans-serif;font-size:16px;box-shadow:0 5px 20px rgba(0,0,0,0.3);';
-        banner.innerHTML = 'Kliknij na słowo, od którego chcesz zacząć czytanie <button id="rsvp-cancel-selection" style="margin-left:15px;padding:5px 15px;border:none;border-radius:5px;cursor:pointer;background:white;color:#e94560;font-weight:bold;">Anuluj</button>';
+        banner.innerHTML = 'Click where you want to start reading <button id="rsvp-cancel-selection" style="margin-left:15px;padding:5px 15px;border:none;border-radius:5px;cursor:pointer;background:white;color:#e94560;font-weight:bold;">Anuluj</button>';
         document.body.appendChild(banner);
 
         document.getElementById('rsvp-cancel-selection').onclick = (e) => {
@@ -873,10 +873,10 @@
                 displayWord(currentIndex);
                 status.textContent = `Start od: "${words[foundIndex]}" (słowo ${foundIndex + 1} z ${words.length})`;
             } else {
-                status.textContent = `Nie znaleziono "${clickedWord}" w tekście`;
+                status.textContent = `Did not found "${clickedWord}"`;
             }
         } else {
-            status.textContent = 'Kliknij na słowo (min. 2 znaki)';
+            status.textContent = 'Click a word';
         }
 
         cancelSelection();
@@ -942,10 +942,10 @@
         if (words.length > 0) {
             displayWord(0);
             enableControls();
-            status.textContent = `Gotowe! ${words.length} słów`;
+            status.textContent = `Done! ${words.length} words`;
             updateWordPicker();
         } else {
-            status.textContent = 'Nie znaleziono tekstu';
+            status.textContent = 'Text not found';
         }
     }
 
@@ -971,7 +971,7 @@
     } else {
         // Extract from HTML
         showUrlInput(); // Show URL input in case user wants to load PDF
-        status.textContent = 'Ekstrakcja tekstu ze strony...';
+        status.textContent = 'Extracting text...';
         setTimeout(() => {
             const text = extractFromHTML();
             processText(text);
